@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact · Elusive</title>
+  <meta name="description" content="How to reach Elusive: support, security disclosure, abuse, and press.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/marketing.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav" id="siteNav">
+  <div class="site-nav__inner">
+    <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <nav class="site-nav__links" aria-label="Primary">
+      <div class="nav-desktop">
+        <a class="nav-link" href="/#identities">Aliases</a>
+        <a class="nav-link" href="security">Security</a>
+        <a class="nav-link" href="help">Help</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+        <a class="nav-link" href="login">Log in</a>
+        <a class="btn btn--primary btn--sm" href="join">Create inbox</a>
+      </div>
+      <button class="btn btn--icon btn--ghost nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+        <svg class="icon nav-burger__open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+        <svg class="icon nav-burger__close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+    </nav>
+  </div>
+  <div class="site-nav__mobile" id="navMobile">
+    <a class="nav-link" href="/#identities">Aliases</a>
+    <a class="nav-link" href="security">Security</a>
+    <a class="nav-link" href="help">Help</a>
+    <a class="nav-link" href="login">Log in</a>
+    <a class="btn btn--primary btn--block" href="join">Create inbox</a>
+  </div>
+  <div class="nav-scrim" id="navScrim"></div>
+</header>
+
+<main id="main" class="container">
+  <article class="legal">
+    <div class="legal__head">
+      <span class="eyebrow">Contact</span>
+      <h1>How to reach us.</h1>
+      <p class="legal__intro">Elusive is a small, independent project, so email is how we work. Pick the address
+        that fits and we will get back to you. There is no phone line and no chatbot.</p>
+      <div class="legal__note">Before you write in, the <a class="link" href="help">help page</a> answers the
+        common questions, including what happens if you lose your password.</div>
+    </div>
+
+    <div class="contact-list">
+      <div class="contact-row">
+        <div class="contact-row__k">Support</div>
+        <div class="contact-row__v">
+          <h3>Account and how-to help</h3>
+          <p>Trouble signing in, questions about aliases or encryption modes, anything about using Elusive.</p>
+          <a href="mailto:support@elusivemail.xyz">support@elusivemail.xyz</a>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-row__k">Security</div>
+        <div class="contact-row__v">
+          <h3>Vulnerability disclosure</h3>
+          <p>Found a flaw? Tell us privately with enough to reproduce it, and give us a fair window to fix it
+            before going public. Good-faith research is welcome. Details are in our
+            <a href="/.well-known/security.txt">security.txt</a>.</p>
+          <a href="mailto:security@elusivemail.xyz">security@elusivemail.xyz</a>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-row__k">Abuse</div>
+        <div class="contact-row__v">
+          <h3>Report abuse</h3>
+          <p>Spam, phishing, or misuse of an Elusive address. Include headers where you can.</p>
+          <a href="mailto:abuse@elusivemail.xyz">abuse@elusivemail.xyz</a>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-row__k">Press &amp; other</div>
+        <div class="contact-row__v">
+          <h3>Everything else</h3>
+          <p>Media, partnerships, or a question that does not fit above.</p>
+          <a href="mailto:hello@elusivemail.xyz">hello@elusivemail.xyz</a>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <h2>A note on writing to us</h2>
+      <p>When you email us you are sending a normal message over the internet, so we and your own provider can see
+        it. Do not put passwords or recovery codes in an email to us. We will never ask for them, and there is
+        nothing we could do with them anyway in end-to-end mode.</p>
+      <p>We are small, so replies can take a few days. Security reports jump the queue.</p>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+        <p>Private email that tells you the truth about itself. Free, no ads, nothing sold.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="/#identities">Aliases &amp; personas</a>
+        <a href="security">Security model</a>
+        <a href="help">Help</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about">About</a>
+        <a href="contact">Contact</a>
+        <a href="chat-control">On Chat Control</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="join">Create inbox</a>
+        <a href="login">Log in</a>
+        <a href="recover">Recover access</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="privacy">Privacy</a>
+        <a href="terms">Terms</a>
+        <a href="security">Security</a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>&copy; 2026 Elusive</span>
+      <span class="mono">no ads, nothing sold, no logs</span>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+  </div>
+</footer>
+
+<script src="scripts/shared/site.js"></script>
+</body>
+</html>

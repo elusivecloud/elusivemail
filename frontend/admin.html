@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · Elusive</title>
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/app.css">
+  <link rel="stylesheet" href="styles/admin.css">
+</head>
+<body class="app-body admin-body">
+
+<header class="app-topbar">
+  <a class="brand" href="dashboard" aria-label="Elusive"><span class="brand__word">elusive</span></a>
+  <span class="topbar-sep" aria-hidden="true"></span>
+  <span class="badge admin-tag">Admin</span>
+  <span class="topbar-spacer"></span>
+  <a class="btn btn--ghost btn--sm" href="dashboard">Back to inbox</a>
+  <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+  <button class="btn btn--ghost btn--sm" id="logoutBtn" type="button">Log out</button>
+</header>
+
+<div class="admin-gate" id="gate">
+  <div class="admin-gate__card" id="gateCard">
+    <span class="mono admin-gate__msg" id="gateMsg">Checking access…</span>
+  </div>
+</div>
+
+<main class="admin-wrap" id="panel" hidden>
+  <nav class="admin-tabs" id="tabs">
+    <button class="admin-tab is-active" data-tab="health">Health</button>
+    <button class="admin-tab" data-tab="accounts">Accounts</button>
+    <button class="admin-tab" data-tab="support">Support</button>
+    <button class="admin-tab" data-tab="reserved">Reserved</button>
+  </nav>
+
+  <section class="admin-view is-active" data-view="health">
+    <div class="admin-view__head">
+      <h1 class="admin-h">Platform health</h1>
+      <button class="btn btn--ghost btn--sm" id="refreshStats" type="button">Refresh</button>
+    </div>
+    <div class="stat-grid" id="statGrid"></div>
+    <div class="transport-row" id="transportRow"></div>
+  </section>
+
+  <section class="admin-view" data-view="accounts" hidden>
+    <div class="admin-view__head">
+      <h1 class="admin-h">Accounts</h1>
+      <span class="mono admin-count" id="acctCount"></span>
+    </div>
+    <div class="table-scroll"><table class="admin-table" id="acctTable"></table></div>
+  </section>
+
+  <section class="admin-view" data-view="support" hidden>
+    <div class="admin-view__head">
+      <h1 class="admin-h">Support mail</h1>
+      <span class="mono admin-count" id="supBox"></span>
+    </div>
+    <div class="support-layout">
+      <aside class="support-boxes" id="supportBoxes"></aside>
+      <div class="support-main">
+        <ul class="support-list" id="supportList"></ul>
+        <article class="support-reader" id="supportReader" hidden></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-view" data-view="reserved" hidden>
+    <div class="admin-view__head">
+      <h1 class="admin-h">Reserved names</h1>
+    </div>
+    <form class="reserved-add" id="reservedAdd">
+      <input class="input" id="reservedInput" placeholder="add a name to block" autocomplete="off" spellcheck="false" maxlength="30">
+      <button class="btn btn--primary btn--sm" type="submit">Reserve</button>
+    </form>
+    <div class="reserved-cols">
+      <div>
+        <h2 class="reserved-h">Added by you</h2>
+        <div class="chip-row" id="reservedCustom"></div>
+      </div>
+      <div>
+        <h2 class="reserved-h">Always reserved</h2>
+        <div class="chip-row chip-row--muted" id="reservedBuiltin"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast-host" id="toastHost" aria-live="polite"></div>
+
+<script type="module" src="scripts/pages/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inbox · Elusive</title>
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body class="app-body">
+
+<header class="app-topbar">
+  <button class="btn btn--icon btn--ghost topbar-burger" id="navBurger" aria-label="Open mailboxes">
+    <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+  </button>
+  <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+  <span class="topbar-spacer"></span>
+  <button class="btn btn--primary btn--sm" id="composeBtn">
+    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h8"/><path d="M16.5 4.5a1.8 1.8 0 0 1 2.6 2.6L8 18l-4 1 1-4 11.5-10.5Z"/></svg>
+    <span class="compose-label">Compose</span>
+  </button>
+  <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+  <button class="btn btn--icon btn--ghost avatar-btn" id="avatarBtn" aria-label="Account menu" aria-expanded="false">
+    <span class="avatar avatar--sm" id="avatarInitials">··</span>
+  </button>
+  <div class="avatar-menu" id="avatarMenu" hidden>
+    <div class="avatar-menu__head">
+      <span class="avatar" id="menuAvatar">··</span>
+      <div class="avatar-menu__id">
+        <div class="avatar-menu__name" id="menuName"></div>
+        <div class="avatar-menu__mail" id="menuMail"></div>
+        <div class="avatar-menu__note" id="menuNote"></div>
+      </div>
+    </div>
+    <hr class="divider" style="margin:4px 0">
+    <a class="menu-item" href="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21v-6M5 11V3M12 21v-9M12 8V3M19 21v-5M19 12V3"/><path d="M2.5 15h5M9.5 8h5M16.5 16h5"/></svg>
+      Settings
+    </a>
+    <a class="menu-item" href="updates">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/><path d="m6 6 2.6 2.6M15.4 15.4 18 18M18 6l-2.6 2.6M8.6 15.4 6 18"/></svg>
+      What's new
+    </a>
+    <button class="menu-item" id="logoutBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 21H5.5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 16.5 4.5-4.5L16 7.5"/><path d="M20.5 12H9.5"/></svg>
+      Log out
+    </button>
+  </div>
+</header>
+
+<div class="app" id="app">
+  <div class="app__sidebar-scrim" id="sidebarScrim" aria-hidden="true"></div>
+
+  <aside class="app__sidebar" id="sidebar" aria-label="Mailboxes">
+    <button class="btn btn--primary side-compose" id="sideCompose">
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h8"/><path d="M16.5 4.5a1.8 1.8 0 0 1 2.6 2.6L8 18l-4 1 1-4 11.5-10.5Z"/></svg>
+      New message
+    </button>
+
+    <div class="side-group">
+      <button class="side-item" id="allMailItem" data-filter="all">
+        <span class="side-item__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h4l1.5 2.5h5L16 13h4"/><path d="M5.5 5h13l2.5 8v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4l2.5-8Z"/></svg></span>
+        <span class="side-item__label">All mail</span>
+        <span class="side-item__badge" id="allUnread" hidden></span>
+      </button>
+      <button class="side-item" id="junkItem" data-filter="junk">
+        <span class="side-item__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M6 7l1 12a2 2 0 0 0 2 1.8h6a2 2 0 0 0 2-1.8l1-12"/><path d="M9.5 11v5M14.5 11v5"/><path d="M9 7V4.8A1.8 1.8 0 0 1 10.8 3h2.4A1.8 1.8 0 0 1 15 4.8V7"/></svg></span>
+        <span class="side-item__label">Junk</span>
+        <span class="side-item__badge" id="junkUnread" hidden></span>
+      </button>
+    </div>
+
+    <div class="side-group">
+      <div class="side-group__label">
+        <span>Folders</span>
+        <span class="side-group__actions">
+          <button id="newFolderBtn" data-tooltip="New folder" aria-label="New folder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </span>
+      </div>
+      <div id="folderTree"></div>
+    </div>
+
+    <div class="side-group side-group--grow">
+      <div class="side-group__label">
+        <span>Personas &amp; mailboxes</span>
+        <span class="side-group__actions">
+          <button id="newGroupBtn" data-tooltip="New persona" aria-label="New persona"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg></button>
+          <button id="newAddrBtn" data-tooltip="New address" aria-label="New address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </span>
+      </div>
+      <div id="sideTree"></div>
+    </div>
+  </aside>
+
+  <main class="app__list" aria-label="Message list">
+    <div class="list-head">
+      <span class="list-head__title" id="listTitle">All mail</span>
+      <span class="list-head__count" id="listCount"></span>
+      <span class="list-head__spacer"></span>
+      <button class="btn btn--icon btn--ghost" id="refreshBtn" data-tooltip="Refresh" aria-label="Refresh">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4.5V10h-5.5"/></svg>
+      </button>
+    </div>
+    <div class="dir-tabs" role="tablist">
+      <button class="dir-tab active" data-dir="in" role="tab">Inbox</button>
+      <button class="dir-tab" data-dir="out" role="tab">Sent</button>
+    </div>
+    <div class="list-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="mSearch" type="search" placeholder="Search mail" autocomplete="off" spellcheck="false" aria-label="Search mail">
+    </div>
+    <div class="mlist" id="mlist"></div>
+  </main>
+
+  <div class="app__reader-scrim" id="readerScrim" aria-hidden="true"></div>
+  <section class="app__reader" id="reader" aria-label="Reading pane"></section>
+</div>
+
+<script src="scripts/vendor/openpgp.min.js"></script>
+<script src="scripts/shared/crypto-client.js"></script>
+<script type="module" src="scripts/pages/dashboard.js"></script>
+</body>
+</html>

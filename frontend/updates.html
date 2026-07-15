@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What's new · Elusive</title>
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/app.css">
+  <style>
+    .up-topbar { height: 58px; display: flex; align-items: center; gap: var(--space-3); padding-inline: var(--space-5); border-bottom: 1px solid var(--border); background: var(--surface); }
+    .up-topbar .brand__word { font-size: var(--text-md); }
+    .up-main { max-width: 920px; margin: 0 auto; padding: clamp(48px, 8vw, 88px) var(--space-5) var(--space-10); }
+    .up-hero { text-align: center; max-width: 560px; margin: 0 auto clamp(56px, 8vw, 88px); }
+    .up-hero .headline { margin-top: var(--space-4); }
+    .up-hero .lead { margin-top: var(--space-4); }
+    .up-item { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 56px); align-items: center; margin-bottom: clamp(56px, 9vw, 96px); }
+    .up-mockwrap { display: grid; place-items: center; min-width: 0; }
+    .up-item--flip .up-mockwrap { order: 2; }
+    .up-mock { transform: rotate(var(--tilt, -2.5deg)); pointer-events: none; user-select: none; max-width: 100%; }
+    .up-mock--row { width: min(380px, 100%); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-2); box-shadow: var(--shadow-xl); }
+    .up-mock--row .mrow:hover { background: none; }
+    .up-mock .mrow__tools { display: inline-flex; }
+    .up-mock .mrow__time { opacity: 0; }
+    .up-mock .ctxmenu { position: static; animation: none; box-shadow: var(--shadow-xl); min-width: 230px; z-index: auto; }
+    .up-mock .ctxmenu__item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); font-size: var(--text-sm); color: var(--text-secondary); text-align: left; }
+    .up-mock .ctxmenu__glyph { display: inline-flex; width: 15px; flex: none; justify-content: center; color: var(--text-muted); }
+    .up-mock .ctxmenu__label { white-space: nowrap; }
+    .up-mock--qr { width: min(400px, 100%); }
+    .up-mock--disk {
+      width: min(420px, 100%); background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); padding: var(--space-4);
+      font-family: var(--font-mono);
+    }
+    .up-disk__head { font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); color: var(--text-subtle); margin-bottom: var(--space-3); }
+    .up-disk__row { display: grid; grid-template-columns: 58px 1fr; gap: var(--space-3); align-items: baseline; padding: var(--space-1) 0; min-width: 0; }
+    .up-disk__row span { font-size: var(--text-2xs); color: var(--text-muted); }
+    .up-disk__row code { font-size: var(--text-2xs); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .up-mock--qr .rc-qr { margin-top: 0; background: var(--surface); box-shadow: var(--shadow-xl); }
+    .up-note { min-width: 0; }
+    .up-new { display: inline-flex; align-items: center; height: 22px; padding-inline: var(--space-2); border-radius: var(--radius-full); background: var(--primary); color: var(--primary-text); font-size: var(--text-2xs); font-weight: var(--weight-bold); letter-spacing: var(--tracking-eyebrow); }
+    .up-note h2 { font-size: var(--text-xl); letter-spacing: var(--tracking-tight); margin-top: var(--space-3); }
+    .up-note p { margin-top: var(--space-3); color: var(--text-secondary); font-size: var(--text-md); line-height: var(--leading-relaxed); }
+    .up-more { max-width: 560px; margin: 0 auto; padding: var(--space-5); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-subtle); }
+    .up-more h2 { font-size: var(--text-md); }
+    .up-more ul { margin-top: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); list-style: none; padding: 0; }
+    .up-more li { display: flex; gap: var(--space-3); font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-snug); }
+    .up-more li::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--text-subtle); margin-top: 7px; }
+    .up-more .kbd { font-family: var(--font-mono); font-size: var(--text-xs); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: var(--radius-xs); padding: 0 5px; color: var(--text); background: var(--surface); }
+    .up-cta { text-align: center; margin-top: clamp(48px, 7vw, 72px); }
+    .up-cta p { margin-top: var(--space-4); font-size: var(--text-xs); color: var(--text-subtle); }
+    @media (max-width: 720px) {
+      .up-item, .up-item--flip { grid-template-columns: 1fr; gap: var(--space-5); }
+      .up-item--flip .up-mockwrap { order: 0; }
+    }
+    .up-term { width: min(430px, 100%); transform: rotate(var(--tilt, -2deg)); background: #0d1017; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); overflow: hidden; font-family: var(--font-mono); }
+    .up-term__bar { display: flex; gap: 6px; padding: var(--space-3); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .up-term__dot { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+    .up-term__dot:nth-child(2) { background: #febc2e; }
+    .up-term__dot:nth-child(3) { background: #28c840; }
+    .up-term__body { padding: var(--space-4); font-size: var(--text-2xs); line-height: 1.85; color: #c8d0dd; white-space: pre; overflow-x: auto; }
+    .up-term__body .c { color: #6a7688; }
+    .up-term__body .g { color: #35d07f; }
+    .up-term__body .b { color: #7c8cff; }
+    .up-sep { max-width: 560px; margin: clamp(48px,8vw,84px) auto; border: 0; border-top: 1px solid var(--border); }
+    .up-hero--sub { margin-bottom: clamp(40px,7vw,64px); }
+    .up-hero--sub .headline { font-size: var(--text-2xl); }
+  </style>
+</head>
+<body>
+
+<header class="up-topbar">
+  <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+  <span class="topbar-spacer" style="flex:1"></span>
+  <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+  <a class="btn btn--primary btn--sm" href="dashboard">Open my inbox</a>
+</header>
+
+<main class="up-main">
+  <section class="up-hero up-hero--sub">
+    <span class="eyebrow eyebrow--plain">Update 2</span>
+    <h2 class="headline">Elusive is open source now, and mail seals itself both ways.</h2>
+    <p class="lead">We opened the whole thing up: the server, the browser crypto, the storage layout, all public. You told us closed source was a dealbreaker, and you were right, so we listened. Mail now auto-encrypts in both directions when a key is published, every message gets forward secrecy, identity and read-state columns are ciphertext, deletion is permanent, self-hosters get a full admin dashboard, and recovery plus outbound mail both got hardened.</p>
+  </section>
+
+  <section class="up-item">
+    <div class="up-mockwrap">
+      <div class="up-term" style="--tilt:-2deg" aria-hidden="true">
+        <div class="up-term__bar"><span class="up-term__dot"></span><span class="up-term__dot"></span><span class="up-term__dot"></span></div>
+        <div class="up-term__body"><span class="c"># read it, build it, host it yourself</span>
+<span class="g">$</span> git clone https://github.com/elusivecloud/elusivemail
+<span class="g">$</span> cd elusive/backend && npm install && npm start
+<span class="b">elusive</span> running on http://your-host:3000
+inbound SMTP listening for @your-domain</div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>The whole thing is open</h2>
+      <p>Every line that runs Elusive is public now: the server, the browser crypto, the storage layout. You no longer have to trust our claims, you can read them. Fork it, self-host it, or just check that the page in front of you matches the code we ship.</p>
+    </div>
+  </section>
+
+  <section class="up-item up-item--flip">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:-2deg" aria-hidden="true">
+        <div class="up-disk__head">mail that seals itself, both ways</div>
+        <div class="up-disk__row"><span>inbound</span><code>sender publishes a key, arrives already sealed</code></div>
+        <div class="up-disk__row"><span>outbound</span><code>recipient publishes a key, we seal it before it leaves</code></div>
+        <div class="up-disk__row"><span>either way</span><code>ciphertext, never the plaintext</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Mail now seals itself, both ways</h2>
+      <p>You could already send and receive mail, but now the encryption happens automatically on both sides. Any sender whose app speaks OpenPGP encrypts to you before the message ever leaves them, and we never touch that plaintext at all. Send to someone who's published a key of their own and your message is sealed to them before it leaves us too, over forward-secret TLS. Everything else still gets sealed to your key the instant it lands.</p>
+    </div>
+  </section>
+
+  <section class="up-item">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:-2deg" aria-hidden="true">
+        <div class="up-disk__head">receiving a new message</div>
+        <div class="up-disk__row"><span>key used</span><code>one-time prekey #482</code></div>
+        <div class="up-disk__row"><span>after decrypt</span><code>that key is deleted, for good</code></div>
+        <div class="up-disk__row"><span>next message</span><code>a fresh one-time key, never reused</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Forward secrecy, per message</h2>
+      <p>Each message you receive is sealed to its own one-time key, and that key is gone the moment you decrypt it. Even if your private key were ever exposed down the line, mail already read stays unreadable with it. Once your one-time keys run low, we fall back to a signed key that rotates weekly.</p>
+    </div>
+  </section>
+
+  <section class="up-item up-item--flip">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:2deg" aria-hidden="true">
+        <div class="up-disk__head">admin dashboard</div>
+        <div class="up-disk__row"><span>stats</span><code>users, messages, storage, uptime</code></div>
+        <div class="up-disk__row"><span>users</span><code>list, suspend, or delete</code></div>
+        <div class="up-disk__row"><span>suspend</span><code>step-up auth required</code></div>
+        <div class="up-disk__row"><span>reserved</span><code>manage system address blocks</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Admin panel for self-hosters</h2>
+      <p>A full server administration dashboard: view real-time stats on users, messages, storage usage and process health. List every account, suspend or delete users; destructive actions require your TOTP code or password as a second check, and the last admin cannot be deleted. Manage reserved usernames to prevent address squatting. Everything an operator needs to run the service responsibly.</p>
+    </div>
+  </section>
+
+  <section class="up-item">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:-2deg" aria-hidden="true">
+        <div class="up-disk__head">folders and groups</div>
+        <div class="up-disk__row"><span>folders</span><code>encrypted names, filed in</code></div>
+        <div class="up-disk__row"><span>groups</span><code>colour-coded contact lists</code></div>
+        <div class="up-disk__row"><span>junk</span><code>flag and filter</code></div>
+        <div class="up-disk__row"><span>names at rest</span><code>always ciphertext</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Folders and contact groups</h2>
+      <p>Organise your mail into folders with names that are encrypted at rest, nothing on disk reveals your filing system. Colour-coded contact groups let you tag addresses and find people fast. Mark messages as junk, file them away, and keep your inbox exactly how you want it. Folders, groups, and nicknames all share the same privacy: ciphertext until you unlock them.</p>
+    </div>
+  </section>
+
+  <section class="up-item up-item--flip">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:2deg" aria-hidden="true">
+        <div class="up-disk__head">key custody</div>
+        <div class="up-disk__row"><span>private mode</span><code>encrypted key on server</code></div>
+        <div class="up-disk__row"><span>keyfile mode</span><code>server never holds the key</code></div>
+        <div class="up-disk__row"><span>switching</span><code>fingerprint-verified transitions</code></div>
+        <div class="up-disk__row"><span>recovery</span><code>works in private mode only</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Choose where your key lives</h2>
+      <p>Private mode stores your key encrypted on the server with recovery, so you can sign in from any device. Keyfile mode never lets the server hold it at all; you manage the key yourself. Switch between them with fingerprint verification so the server proves it has the right key. Your inbox works the same either way; only the custody changes.</p>
+    </div>
+  </section>
+
+  <section class="up-item">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:-2deg" aria-hidden="true">
+        <div class="up-disk__head">a user row, as stored on disk</div>
+        <div class="up-disk__row"><span>id</span><code>3</code></div>
+        <div class="up-disk__row"><span>username</span><code>U2FsdGVkX1+9p…</code></div>
+        <div class="up-disk__row"><span>local_part</span><code>k3JxZm9w…</code></div>
+        <div class="up-disk__row"><span>read state</span><code>meta: 7F2a9…</code></div>
+        <div class="up-disk__row"><span>received_at</span><code>C80b…</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Before, a raw row told you everything</h2>
+      <p>Your username, your aliases, and whether you'd read a message used to sit in the database as plain text. Now those columns are ciphertext, with blind keyed-HMAC indexes the server computes on the fly to still route mail and enforce uniqueness. The server finds your inbox by your name. Reading the raw files, nobody else can.</p>
+    </div>
+  </section>
+
+  <section class="up-item up-item--flip">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:2deg" aria-hidden="true">
+        <div class="up-disk__head">what deleting mail leaves behind</div>
+        <div class="up-disk__row"><span>message</span><code>gone</code></div>
+        <div class="up-disk__row"><span>attachments</span><code>gone with it</code></div>
+        <div class="up-disk__row"><span>on disk</span><code>overwritten with zeroes</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Burned means burned</h2>
+      <p>Deleting a message now removes its attachments too, and the database overwrites the freed space so old mail cannot be dug out of the raw file. The same cleanup runs when you burn an address or a temp alias expires. An expired burner also stops accepting new mail the moment its timer runs out.</p>
+    </div>
+  </section>
+
+  <section class="up-item">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:-2deg" aria-hidden="true">
+        <div class="up-disk__head">hardened controls</div>
+        <div class="up-disk__row"><span>recovery hash</span><code>bcrypt · slow on a GPU</code></div>
+        <div class="up-disk__row"><span>outbound TLS</span><code>always verified</code></div>
+        <div class="up-disk__row"><span>outbound WKD</span><code>SSRF allowlist</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Recovery and outbound mail, hardened</h2>
+      <p>Recovery codes now run through bcrypt, slow on a GPU, with existing accounts upgrading on first recovery from the old unsalted sha256. Outbound mail used to let you opt out of TLS verification. Now it can't, verification is always on. The outbound WKD lookup is fenced by an SSRF allowlist so a forged key location can't reach inside our network.</p>
+    </div>
+  </section>
+
+  <section class="up-more">
+    <h2>Also in this update</h2>
+    <ul>
+      <li>Your PGP public key is published at a standard WKD address, so any sender whose mail app supports OpenPGP can encrypt to you before the message reaches us.</li>
+      <li>A nickname system for your account, encrypted at rest, shown on your profile.</li>
+      <li>Security.txt and MTA-STS policy endpoints served at standard well-known locations, so other servers and researchers can verify your mail infrastructure.</li>
+      <li>Every server image is now built and signed by GitHub Actions itself, keylessly, with the signature recorded in a public transparency log; the security page has a live widget to verify what's actually running.</li>
+      <li>Build-info endpoint returns the deployed commit hash and repository URL for deployment verification.</li>
+      <li>Permissions-Policy header blocks camera, microphone, geolocation, and advertising APIs site-wide.</li>
+      <li>Onboarding flow marks first-run setup so new users get a guided start.</li>
+      <li>Prekey auto-refill keeps forward secrecy working without manual intervention, the client tops up when supplies run low.</li>
+      <li>Database migration system preserves all data through four schema upgrades with no downtime.</li>
+      <li>Reserved username system prevents squatting of system addresses, with both built-in and admin-managed custom blocks.</li>
+      <li>Backup tool with configurable retention and dry-run mode; admin CLI for promoting users and seeding system mailboxes.</li>
+      <li>Burner aliases are never published to key discovery, so nobody can tie a temp address to your main one by looking up its key.</li>
+      <li>Turning end-to-end on or off now converts your attachments along with your messages.</li>
+      <li>Backup codes are longer, account recovery signs out every other session, a copy of the database alone can no longer stand in for a recovery code, and re-running two-factor setup asks for a current code first.</li>
+      <li>The symmetric crypto and TOTP moved into a small, auditable Rust core, with an identical pure-JavaScript fallback.</li>
+      <li>Passwords now run through native bcrypt, and every API response is marked no-store so nothing sensitive is cached.</li>
+      <li>Outbound mail over STARTTLS is pinned to forward-secret cipher suites only, so that hop stays unreadable later even if a key is ever exposed.</li>
+      <li>Settings now has an actual Export and Delete account: export downloads everything on your account as one JSON file, delete asks for your password and permanently wipes your mail, addresses, and keys.</li>
+      <li>Safer error handling everywhere: a failure returns a clean message, never a stack trace or a hung request.</li>
+      <li>Inbound SMTP now throttles per-IP recipient volume.</li>
+      <li>The unlocked PGP key lives only in JS memory. Closing the tab clears it; it's never written to web storage.</li>
+      <li>Defense-in-depth CSP meta tag on every page, plus <span class="kbd">X-Frame-Options: DENY</span>.</li>
+      <li>The <span class="kbd">X-Enc</span> attachment header was removed; downloads use a small JSON envelope.</li>
+      <li>Inbound mail that can't be authenticated is now flagged unverified, not silently trusted.</li>
+      <li><span class="kbd">MASTER_KEY</span> and <span class="kbd">SESSION_SECRET</span> are required to boot in any environment, with optional rotation support.</li>
+      <li>The repo is now properly git-tracked; live DBs, backups, and agent artifacts were purged; AGPL LICENSE, SECURITY.md, a non-root Dockerfile, and a CI workflow were added.</li>
+      <li>Dependency floors bumped; <span class="kbd">mailauth</span> is now a declared dependency.</li>
+      <li>Everything from launch is still here: the sealed envelope, hover and right-click actions, burn-on-read, and the printable recovery QR card, all still built on the same Rust crypto core.</li>
+    </ul>
+  </section>
+
+  <hr class="up-sep">
+
+  <section class="up-hero up-hero--sub">
+    <span class="eyebrow eyebrow--plain">Update 1 · July 2026</span>
+    <h2 class="headline">Elusive just got its first update.</h2>
+    <p class="lead">Encryption got deeper, managing mail got faster, and losing your recovery code got harder. Everything below shipped in the first update.</p>
+  </section>
+
+  <section class="up-item">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--disk" style="--tilt:-2deg" aria-hidden="true">
+        <div class="up-disk__head">a message row, as stored on disk</div>
+        <div class="up-disk__row"><span>from</span><code>-----BEGIN PGP MESSAGE----- wWwGFQSpWctlsQsTO…</code></div>
+        <div class="up-disk__row"><span>to</span><code>-----BEGIN PGP MESSAGE----- wWwGFQSpWctlsQsTO…</code></div>
+        <div class="up-disk__row"><span>subject</span><code>-----BEGIN PGP MESSAGE----- wWwGFQSpWctlsQsTO…</code></div>
+        <div class="up-disk__row"><span>body</span><code>-----BEGIN PGP MESSAGE----- wWwGFQSpWctlsQsTO…</code></div>
+        <div class="up-disk__row"><span>folder</span><code>dYEujsv4Tkqw9icd0f7/ct/woBVecxRVjBGYFqXNo0df…</code></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>The envelope is sealed now</h2>
+      <p>Mail bodies were always encrypted to your key. Now the stored sender and recipient are too, and persona names, folder names, nicknames and attachment filenames are ciphertext at rest. Above is what a message row on disk actually looks like. There is nothing else to see.</p>
+    </div>
+  </section>
+
+  <section class="up-item up-item--flip">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--row" style="--tilt:-2.5deg" aria-hidden="true">
+        <div class="mrow unread">
+          <div class="mrow__top"><span class="mrow__dot"></span><span class="mrow__who">alex@wire.dev</span></div>
+          <span class="mrow__time">2m</span>
+          <span class="mrow__subject">Invoice for July</span>
+          <div class="mrow__tools" id="mockTools"></div>
+        </div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Actions where your cursor already is</h2>
+      <p>Hover any message and a small panel appears: mark it read, reply, junk it, or delete it. Right-click the panel to choose which buttons live there. Your picks stick.</p>
+    </div>
+  </section>
+
+  <section class="up-item">
+    <div class="up-mockwrap">
+      <div class="up-mock" style="--tilt:2deg" aria-hidden="true">
+        <div class="ctxmenu" id="mockMenu"></div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Right-click, everywhere</h2>
+      <p>Messages, folders, addresses and personas all answer to a right-click now. Reply, forward, file, copy an address, mark junk, delete. Whatever the thing is, what you can do to it is one click away.</p>
+    </div>
+  </section>
+
+  <section class="up-item up-item--flip">
+    <div class="up-mockwrap">
+      <div class="up-mock up-mock--qr" style="--tilt:-2deg" aria-hidden="true">
+        <div class="rc-qr">
+          <div class="rc-qr__img" id="mockQR"></div>
+          <div class="rc-qr__side">
+            <p>Prefer paper? Scan this with a phone camera and it opens the recovery page with the code already filled in.</p>
+            <span class="btn btn--secondary btn--sm">Download QR card</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="up-note">
+      <span class="up-new">NEW</span>
+      <h2>Your recovery code, on paper</h2>
+      <p>The recovery code is no longer just a long string to lose. Save it as a QR card, print it, and put it wherever the passports live. Scanning it opens the recovery page with the code filled in for you.</p>
+    </div>
+  </section>
+
+  <section class="up-more">
+    <h2>Also in update 1</h2>
+    <ul>
+      <li>Links inside messages are clickable, and they open in a new tab with no referrer.</li>
+      <li><span>Keyboard shortcuts on the message list: <span class="kbd">u</span> toggles read, <span class="kbd">!</span> flags junk, <span class="kbd">#</span> deletes.</span></li>
+      <li>Marking mail as read from the list never triggers burn on read. Only opening a message does.</li>
+      <li>Forward is in the reader now, next to reply.</li>
+    </ul>
+  </section>
+
+  <div class="up-cta">
+    <a class="btn btn--primary btn--lg" href="dashboard">Take me to my inbox</a>
+    <p>You will not be sent here again. The page stays at /updates whenever you want it back.</p>
+  </div>
+</main>
+
+<script type="module" src="scripts/pages/updates.js"></script>
+</body>
+</html>

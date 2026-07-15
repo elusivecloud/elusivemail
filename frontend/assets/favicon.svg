@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    text { fill: #0b0c0f; }
+    @media (prefers-color-scheme: dark) { text { fill: #f6f7f9; } }
+  </style>
+  <text x="32" y="33" text-anchor="middle" dominant-baseline="central"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+    font-size="56" font-weight="700" letter-spacing="-1">e</text>
+</svg>

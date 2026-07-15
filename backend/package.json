@@ -1,0 +1,40 @@
+{
+  "name": "elusive",
+  "version": "0.1.0",
+  "description": "Privacy-first disposable-alias email with end-to-end encryption",
+  "license": "AGPL-3.0-or-later",
+  "type": "commonjs",
+  "main": "src/server.js",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node src/server.js",
+    "build": "napi build --release --cargo-cwd crates/crypto-core native",
+    "build:debug": "napi build --cargo-cwd crates/crypto-core native",
+    "test": "node test/security-check.js && node test/upgrade-check.js && node test/account-check.js && node test/smtp-check.js",
+    "test:core": "cargo test --manifest-path crates/crypto-core/Cargo.toml",
+    "make-admin": "node tools/make-admin.js",
+    "backup": "node tools/backup.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "better-sqlite3": "^11.9.1",
+    "cookie-session": "^2.1.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^7.2.0",
+    "mailauth": "^4.13.3",
+    "mailparser": "^3.7.3",
+    "nodemailer": "^9.0.3",
+    "openpgp": "^5.11.2",
+    "smtp-server": "^3.13.5"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2.18.4"
+  },
+  "overrides": {
+    "mailauth": {
+      "nodemailer": "^9.0.3"
+    },
+    "tar": "^7.5.20"
+  }
+}

@@ -1,0 +1,28 @@
+[package]
+name = "crypto-core"
+version = "0.1.0"
+edition = "2021"
+description = "Symmetric at-rest crypto + TOTP for Elusive, exposed to Node via napi-rs"
+license = "AGPL-3.0-or-later"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = { version = "2", default-features = false, features = ["napi6"] }
+napi-derive = "2"
+aes-gcm = "0.10"
+rand = "0.8"
+hmac = "0.12"
+sha1 = "0.10"
+sha2 = "0.10"
+hex = "0.4"
+base64 = "0.22"
+data-encoding = "2"
+
+[build-dependencies]
+napi-build = "2"
+
+[profile.release]
+lto = true
+strip = "symbols"

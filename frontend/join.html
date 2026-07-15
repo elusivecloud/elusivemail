@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create your inbox · Elusive</title>
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/auth.css">
+</head>
+<body>
+<div class="auth-shell">
+  <aside class="auth-aside">
+    <div class="auth-aside__grid" aria-hidden="true"></div>
+    <a class="brand brand--lg" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <div class="auth-aside__body">
+      <h2>Your private inbox, in under a minute.</h2>
+      <p>End-to-end from your very first email. Your key is generated here in your browser and never leaves it, so we cannot read your mail.</p>
+      <div class="auth-aside__points">
+        <div class="auth-aside__point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>Free, no invite code, no waitlist</div>
+        <div class="auth-aside__point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>Disposable aliases that burn themselves</div>
+        <div class="auth-aside__point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>Nothing sold, nothing logged</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-main__top">
+      <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-card__head">
+        <h1>Create your inbox</h1>
+        <p>No email required. Your username becomes your address.</p>
+      </div>
+
+      <form class="auth-form" id="joinForm" novalidate>
+        <div class="form-status" id="formStatus"><span></span><span></span></div>
+        <div class="field" id="userField">
+          <label class="field-label" for="username">Username</label>
+          <input class="input" id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="e.g. vesper" required>
+          <div class="field-hint" id="userHint">3 to 20 characters. Letters, numbers, and&nbsp;. _ -</div>
+          <div class="field-error"><span></span><span></span></div>
+        </div>
+        <div class="field" id="passField">
+          <label class="field-label" for="password">Password</label>
+          <div class="input-affix">
+            <input class="input" id="password" name="password" type="password" autocomplete="new-password" placeholder="At least 10 characters" required>
+            <button class="btn btn--icon btn--ghost input-reveal" data-reveal></button>
+          </div>
+          <div class="pw-meter" id="pwMeter" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <div class="pw-hint" id="pwHint">Long and unique beats short and clever.</div>
+        </div>
+        <label class="check">
+          <input type="checkbox" id="tos" name="tos" required>
+          <span class="check__box" aria-hidden="true"></span>
+          <span>I understand that if I lose both my password and my recovery code, my mail cannot be recovered, and I agree to the <a class="link" href="terms" target="_blank" rel="noopener noreferrer">Terms</a> and <a class="link" href="privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>
+        </label>
+        <button class="btn btn--primary btn--lg btn--block" id="joinBtn" type="submit">Create inbox</button>
+      </form>
+
+      <p class="auth-alt">Already have an inbox? <a class="link" href="login">Log in</a></p>
+    </div>
+  </main>
+</div>
+
+<script src="scripts/vendor/openpgp.min.js"></script>
+<script src="scripts/shared/crypto-client.js"></script>
+<script type="module" src="scripts/pages/join.js"></script>
+</body>
+</html>

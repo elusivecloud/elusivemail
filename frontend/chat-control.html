@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>On Chat Control · Elusive</title>
+  <meta name="description" content="Elusive's position on the EU Chat Control proposal and mandatory scanning of private messages.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/marketing.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav" id="siteNav">
+  <div class="site-nav__inner">
+    <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <nav class="site-nav__links" aria-label="Primary">
+      <div class="nav-desktop">
+        <a class="nav-link" href="/#identities">Aliases</a>
+        <a class="nav-link" href="security">Security</a>
+        <a class="nav-link" href="help">Help</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+        <a class="nav-link" href="login">Log in</a>
+        <a class="btn btn--primary btn--sm" href="join">Create inbox</a>
+      </div>
+      <button class="btn btn--icon btn--ghost nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+        <svg class="icon nav-burger__open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+        <svg class="icon nav-burger__close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+    </nav>
+  </div>
+  <div class="site-nav__mobile" id="navMobile">
+    <a class="nav-link" href="/#identities">Aliases</a>
+    <a class="nav-link" href="security">Security</a>
+    <a class="nav-link" href="help">Help</a>
+    <a class="nav-link" href="login">Log in</a>
+    <a class="btn btn--primary btn--block" href="join">Create inbox</a>
+  </div>
+  <div class="nav-scrim" id="navScrim"></div>
+</header>
+
+<main id="main" class="container">
+  <article class="legal">
+    <div class="legal__head">
+      <span class="eyebrow">Our position</span>
+      <h1>On Chat Control.</h1>
+      <p class="statement-lead">You cannot scan everyone's private messages and still call them private.</p>
+      <p class="legal__intro">Chat Control is the common name for the EU regulation that would require online
+        services to search private communications for illegal material, including through client-side scanning
+        that reads your messages on your own device before they are encrypted. We think it is the wrong answer,
+        and we have built Elusive so that, for the strictest accounts, we could not comply even if forced.</p>
+    </div>
+
+    <section>
+      <h2>What is actually proposed</h2>
+      <p>The idea is a legal duty to detect and report certain illegal content across messaging and email. The
+        part that matters for privacy is how. Because strong encryption means a provider cannot read the messages
+        in transit or at rest, the proposals reach for client-side scanning: software on your own device that
+        inspects your messages against a list before they are sealed. That is not a narrow exception to
+        encryption. It is a camera pointed at the inside of the envelope.</p>
+    </section>
+
+    <section>
+      <h2>Why we are against it</h2>
+      <p><strong>There is no scanner that only ever catches the guilty.</strong> Any system that inspects
+        everyone's messages produces false accusations, and it turns every private conversation into something
+        that is checked by default. Mass suspicion is not the same as safety.</p>
+      <p><strong>A backdoor does not stay open for only the good people.</strong> Once a service is built to read
+        messages it was designed not to read, that capability exists for whoever gains control of it: a future
+        government, a hostile one, or an attacker who breaks in. You cannot build a lock that only opens for the
+        right reasons.</p>
+      <p><strong>It breaks the one thing that makes end-to-end mean anything.</strong> The whole point is that no
+        one in the middle can read your mail. Scanning on the device before encryption removes exactly that
+        guarantee, while letting a service still claim the word "encrypted." We will not play that game.</p>
+    </section>
+
+    <section>
+      <h2>What this means for Elusive</h2>
+      <p>Our answer is not a promise, it is the design. In keyfile mode we hold no copy of your key, so there is
+        nothing on our side to scan and nothing to hand over. We will not add scanning to the code we ship to
+        your browser or to a future app. And the parts of Elusive that are private are private because of how
+        they are built, not because of a policy we could quietly change.</p>
+      <p>Where the law reaches metadata, the routing information we cannot avoid handling, we keep as little as we
+        can and are working to hold even less. Where it would reach the contents of your mail, the honest position
+        is this: we would rather not operate under a rule that forces us to break encryption than betray the
+        people who trusted us with it.</p>
+    </section>
+
+    <section>
+      <h2>We will be transparent about pressure</h2>
+      <p>We are a small project and we cannot change EU law on our own. What we can do is be clear about where we
+        stand and what we are asked to do. A transparency report and a warrant canary are on our plan, so that if
+        we are ever compelled to act against these principles, the absence of a signal tells you as much as a
+        statement could.</p>
+    </section>
+
+    <section>
+      <h2>If you want to help</h2>
+      <p>This gets decided by lawmakers, so the useful thing is to be heard by yours. Contact your MEP, and
+        support the digital-rights groups working on it, such as
+        <a class="link" href="https://edri.org" target="_blank" rel="noopener noreferrer">European Digital Rights</a>. Private
+        communication is worth defending while it is still legal to have.</p>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+        <p>Private email that tells you the truth about itself. Free, no ads, nothing sold.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="/#identities">Aliases &amp; personas</a>
+        <a href="security">Security model</a>
+        <a href="help">Help</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about">About</a>
+        <a href="contact">Contact</a>
+        <a href="chat-control">On Chat Control</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="join">Create inbox</a>
+        <a href="login">Log in</a>
+        <a href="recover">Recover access</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="privacy">Privacy</a>
+        <a href="terms">Terms</a>
+        <a href="security">Security</a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>&copy; 2026 Elusive</span>
+      <span class="mono">no ads, nothing sold, no logs</span>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+  </div>
+</footer>
+
+<script src="scripts/shared/site.js"></script>
+</body>
+</html>

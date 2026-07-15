@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in · Elusive</title>
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/auth.css">
+</head>
+<body>
+<div class="auth-shell">
+  <aside class="auth-aside">
+    <div class="auth-aside__grid" aria-hidden="true"></div>
+    <a class="brand brand--lg" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <div class="auth-aside__body">
+      <h2>Welcome back to the inbox we can&rsquo;t read.</h2>
+      <p>Your mail stays sealed. In end-to-end mode, only your password unlocks it, and that happens right here in your browser.</p>
+      <div class="auth-aside__points">
+        <div class="auth-aside__point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s7.5-3.8 7.5-9.5V5.2L12 2.5 4.5 5.2V12c0 5.7 7.5 9.5 7.5 9.5Z"/></svg>Keys never leave your device</div>
+        <div class="auth-aside__point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>No logs, no trackers</div>
+        <div class="auth-aside__point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>Optional TOTP two-factor</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-main__top">
+      <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-card__head">
+        <h1>Log in</h1>
+        <p>Enter your credentials to reach your inbox.</p>
+      </div>
+
+      <form class="auth-form" id="loginForm" novalidate>
+        <div class="form-status" id="formStatus"><span></span><span></span></div>
+        <div class="field">
+          <label class="field-label" for="username">Username or email</label>
+          <input class="input" id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="password">Password <a class="link link--muted" href="recover" style="font-weight:400">Forgot?</a></label>
+          <div class="input-affix">
+            <input class="input" id="password" name="password" type="password" autocomplete="current-password" required>
+            <button class="btn btn--icon btn--ghost input-reveal" data-reveal></button>
+          </div>
+        </div>
+        <button class="btn btn--primary btn--lg btn--block" id="loginBtn" type="submit">Log in</button>
+      </form>
+
+      <p class="auth-alt">New to Elusive? <a class="link" href="join">Create your inbox</a></p>
+      <div class="auth-meta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+        Secured with end-to-end encryption
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="scripts/vendor/openpgp.min.js"></script>
+<script src="scripts/shared/crypto-client.js"></script>
+<script type="module" src="scripts/pages/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+# ---- Dependencies ----
+node_modules/
+backend/node_modules/
+
+# ---- Build artifacts ----
+target/
+backend/target/
+backend/native/
+dist/
+coverage/
+
+# ---- Databases (live + SQLite sidecar files) ----
+*.db
+*.db-shm
+*.db-wal
+backend/data/
+backend/backups/
+backups/
+
+# ---- Secrets / credentials ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# ---- TLS / Letsencrypt ----
+/etc/letsencrypt/
+
+# ---- Agent / runtime artifacts ----
+.claude/
+.playwright-mcp/
+.vscode/
+.idea/
+
+# ---- Logs & OS crumbs ----
+*.log
+.DS_Store
+Thumbs.dbshot-updates.png
+deploy/
+OPS.md

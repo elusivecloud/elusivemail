@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy · Elusive</title>
+  <meta name="description" content="What Elusive collects, what it can never see, and what it will never do.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/marketing.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav" id="siteNav">
+  <div class="site-nav__inner">
+    <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <nav class="site-nav__links" aria-label="Primary">
+      <div class="nav-desktop">
+        <a class="nav-link" href="/#identities">Aliases</a>
+        <a class="nav-link" href="security">Security</a>
+        <a class="nav-link" href="terms">Terms</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+        <a class="nav-link" href="login">Log in</a>
+        <a class="btn btn--primary btn--sm" href="join">Create inbox</a>
+      </div>
+      <button class="btn btn--icon btn--ghost nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+        <svg class="icon nav-burger__open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+        <svg class="icon nav-burger__close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+    </nav>
+  </div>
+  <div class="site-nav__mobile" id="navMobile">
+    <a class="nav-link" href="/#identities">Aliases</a>
+    <a class="nav-link" href="security">Security</a>
+    <a class="nav-link" href="terms">Terms</a>
+    <a class="nav-link" href="login">Log in</a>
+    <a class="btn btn--primary btn--block" href="join">Create inbox</a>
+  </div>
+  <div class="nav-scrim" id="navScrim"></div>
+</header>
+
+<main id="main" class="container">
+  <article class="legal">
+    <div class="legal__head">
+      <span class="eyebrow">Legal</span>
+      <h1>Privacy Policy</h1>
+      <div class="legal__meta"><span>Effective 12 July 2026</span><span>Last updated 15 July 2026</span></div>
+      <p class="legal__intro">This page explains what Elusive collects, what it genuinely cannot see, and what it
+        will never do. It matches how the product actually works. When the code changes, this page changes.</p>
+      <div class="legal__note">The short version: we do not run ads, we do not sell or share your data, and we do
+        not log the contents of your mail. In end-to-end mode we cannot read your messages at all.</div>
+    </div>
+
+    <nav class="legal__toc" aria-label="Contents">
+      <a href="#collect"><span class="num">01</span> What we collect</a>
+      <a href="#cannot"><span class="num">02</span> What we cannot see</a>
+      <a href="#never"><span class="num">03</span> What we never do</a>
+      <a href="#deletion"><span class="num">04</span> Disposables and deletion</a>
+      <a href="#cookies"><span class="num">05</span> Cookies</a>
+      <a href="#outbound"><span class="num">06</span> Mail you send out</a>
+      <a href="#rights"><span class="num">07</span> Your choices</a>
+      <a href="#security"><span class="num">08</span> Security</a>
+    </nav>
+
+    <section id="collect">
+      <h2><span class="num">01</span> What we collect</h2>
+      <p>We keep only what the service needs to work:</p>
+      <ul>
+        <li><strong>Account details.</strong> Your username, a securely hashed password, and an optional
+          nickname. No outside email address is required to sign up. Your username and every alias are stored as
+          ciphertext, matched on login or delivery through a keyed HMAC index rather than the plain value, so a
+          copy of the database alone does not hand over who you are.</li>
+        <li><strong>Your addresses.</strong> The master and disposable addresses you create, their expiry
+          timers, and which persona group they belong to.</li>
+        <li><strong>Delivery metadata.</strong> Who a message is from or to, and when it arrives, is visible to us
+          at the moment of delivery, because routing does not work without it. Once stored, that same from/to
+          pair, plus whether you've read the message, is ciphertext. In end-to-end mode subject lines are
+          encrypted too, and message length is padded so ciphertext size does not hint at the content.</li>
+        <li><strong>Message contents, in server-managed mode only.</strong> Stored encrypted at rest with a key
+          we hold. This is the trade you accept for convenient recovery and search.</li>
+      </ul>
+      <p>We do not keep access logs of your requests, and message contents are never written to a log, on disk
+        or in the console.</p>
+    </section>
+
+    <section id="cannot">
+      <h2><span class="num">02</span> What we cannot see</h2>
+      <p>When you turn on end-to-end encryption, your key is generated in your browser and never leaves it in a
+        form we can use. From that point:</p>
+      <ul>
+        <li>We cannot read your message bodies.</li>
+        <li>We cannot read your subject lines.</li>
+        <li>In keyfile mode we hold no copy of your key at all, so there is nothing we could be forced to hand
+          over.</li>
+      </ul>
+      <p>This is not a promise to behave. It is a limit built into how the system works.</p>
+    </section>
+
+    <section id="never">
+      <h2><span class="num">03</span> What we never do</h2>
+      <ul>
+        <li>No ads, no trackers, no profiling. Your mail is not a product.</li>
+        <li>No selling or sharing your data, to advertisers or to anyone else.</li>
+        <li>No backdoor in keyfile mode. If you hold the only key, we cannot read your mail for anyone who asks.</li>
+        <li>No logging of message contents. It is built in, not a toggle you have to trust.</li>
+      </ul>
+    </section>
+
+    <section id="deletion">
+      <h2><span class="num">04</span> Disposables and deletion</h2>
+      <p>Disposable aliases are built to disappear. When one reaches its timer, or when its mail is first opened
+        if you chose burn-on-read, the alias and every message it holds are permanently deleted. We do not retain
+        a shadow copy. You can also delete any address or message yourself at any time, which removes it for good.</p>
+      <p>Account data that we do hold stays only as long as your account exists. Close your account and it is
+        removed.</p>
+    </section>
+
+    <section id="cookies">
+      <h2><span class="num">05</span> Cookies</h2>
+      <p>We use a single session cookie to keep you logged in. It is strictly necessary, marked
+        <span class="mono">SameSite=strict</span>, and set to HTTPS-only in production. We do not use analytics
+        cookies, advertising cookies, or third-party trackers.</p>
+    </section>
+
+    <section id="outbound">
+      <h2><span class="num">06</span> Mail you send out</h2>
+      <p>Mail to addresses outside Elusive leaves over standard email transport. It travels encrypted in transit
+        where the receiving server supports it, but once it arrives we cannot control what that server does with
+        it. If the recipient publishes their own public key where we can find it, we encrypt the message to that
+        key before it ever leaves our server, so the content itself is sealed for the whole trip, not just the
+        hop. Otherwise, end-to-end protection only holds while your mail stays on Elusive.</p>
+    </section>
+
+    <section id="rights">
+      <h2><span class="num">07</span> Your choices</h2>
+      <p>You control how private your mail is, and you can change it at any time from your settings. You can edit
+        your profile, delete addresses and messages, enable two-factor authentication, and export your key in
+        end-to-end mode. If you want your account and its data removed, closing the account does exactly that.</p>
+    </section>
+
+    <section id="security">
+      <h2><span class="num">08</span> Security</h2>
+      <p>Passwords are hashed with bcrypt. Private keys are locked with Argon2id, a memory-hard function that is
+        slow to brute-force. Mail at rest is encrypted, and end-to-end mail is stored as armored PGP we cannot
+        read. Our full security model, including its honest limits, lives on the
+        <a class="link" href="security">security page</a>. If you believe you have found a
+        vulnerability, that page is the place to start.</p>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+        <p>Private email that tells you the truth about itself. Free, no ads, nothing sold.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="security">Security model</a>
+        <a href="/#identities">Aliases</a>
+        <a href="/#how">How it works</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="join">Create inbox</a>
+        <a href="login">Log in</a>
+        <a href="recover">Recover access</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="privacy">Privacy</a>
+        <a href="terms">Terms</a>
+        <a href="/#how">Disclosure</a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>&copy; 2026 Elusive</span>
+      <span class="mono">no ads, nothing sold, no logs</span>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+  </div>
+</footer>
+
+<script src="scripts/shared/site.js"></script>
+</body>
+</html>

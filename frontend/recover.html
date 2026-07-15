@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recover access · Elusive</title>
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/auth.css">
+</head>
+<body>
+<div class="auth-shell">
+  <aside class="auth-aside">
+    <div class="auth-aside__grid" aria-hidden="true"></div>
+    <a class="brand brand--lg" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <div class="auth-aside__body">
+      <h2>Your recovery code is the only way back.</h2>
+      <p>We never see it. Your browser uses it to unlock a spare copy of your key, then locks that key again under a new password. The code itself never touches our servers.</p>
+      <div class="auth-aside__points">
+        <div class="auth-aside__point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.3"/><path d="m10.6 12.5 8.4-8.4"/><path d="m15.5 7 2.5 2.5"/><path d="m17.8 4.7 2.5 2.5"/></svg>Only works with your recovery code</div>
+        <div class="auth-aside__point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s7.5-3.8 7.5-9.5V5.2L12 2.5 4.5 5.2V12c0 5.7 7.5 9.5 7.5 9.5Z"/></svg>Keyfile mode has no recovery, by design</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-main__top">
+      <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-card__head">
+        <h1>Recover access</h1>
+        <p>Reset your password with your recovery code.</p>
+      </div>
+
+      <form class="auth-form" id="recoverForm" novalidate>
+        <div class="form-status" id="formStatus"><span></span><span></span></div>
+        <div class="field">
+          <label class="field-label" for="username">Username</label>
+          <input class="input" id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="recoveryCode">Recovery code</label>
+          <input class="input mono" id="recoveryCode" name="recoveryCode" type="text" placeholder="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+          <div class="field-hint">The 25-character code shown once when you enabled end-to-end.</div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="newPassword">New password</label>
+          <div class="input-affix">
+            <input class="input" id="newPassword" name="newPassword" type="password" autocomplete="new-password" placeholder="At least 10 characters" required>
+            <button class="btn btn--icon btn--ghost input-reveal" data-reveal></button>
+          </div>
+        </div>
+        <button class="btn btn--primary btn--lg btn--block" id="recoverBtn" type="submit">Reset password</button>
+      </form>
+
+      <p class="auth-alt">Remembered it? <a class="link" href="login">Back to log in</a></p>
+    </div>
+  </main>
+</div>
+
+<script src="scripts/vendor/openpgp.min.js"></script>
+<script src="scripts/shared/crypto-client.js"></script>
+<script type="module" src="scripts/pages/recover.js"></script>
+</body>
+</html>

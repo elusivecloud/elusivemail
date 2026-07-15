@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help · Elusive</title>
+  <meta name="description" content="Answers to the common questions about Elusive: pricing, recovery, encryption modes, aliases, and what is on the way.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/marketing.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav" id="siteNav">
+  <div class="site-nav__inner">
+    <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <nav class="site-nav__links" aria-label="Primary">
+      <div class="nav-desktop">
+        <a class="nav-link" href="/#identities">Aliases</a>
+        <a class="nav-link" href="security">Security</a>
+        <a class="nav-link" href="help">Help</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+        <a class="nav-link" href="login">Log in</a>
+        <a class="btn btn--primary btn--sm" href="join">Create inbox</a>
+      </div>
+      <button class="btn btn--icon btn--ghost nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+        <svg class="icon nav-burger__open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+        <svg class="icon nav-burger__close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+    </nav>
+  </div>
+  <div class="site-nav__mobile" id="navMobile">
+    <a class="nav-link" href="/#identities">Aliases</a>
+    <a class="nav-link" href="security">Security</a>
+    <a class="nav-link" href="help">Help</a>
+    <a class="nav-link" href="login">Log in</a>
+    <a class="btn btn--primary btn--block" href="join">Create inbox</a>
+  </div>
+  <div class="nav-scrim" id="navScrim"></div>
+</header>
+
+<main id="main" class="container">
+  <article class="legal">
+    <div class="legal__head">
+      <span class="eyebrow">Help</span>
+      <h1>Questions, answered straight.</h1>
+      <p class="legal__intro">The things people ask most. If something here is out of date with how the product
+        actually works, that is a bug, tell us at <a class="link" href="contact">contact</a>.</p>
+    </div>
+
+    <div class="faq">
+      <details open>
+        <summary>Is Elusive really free?</summary>
+        <p>Yes. No ads, no trackers, and we do not sell or share your data. We make no money from Elusive today.
+          If we ever add a paid plan it will be for extra capacity or custom domains, never for privacy itself,
+          and it will not take anything away from accounts that already exist.</p>
+      </details>
+      <details>
+        <summary>What happens if I forget my password?</summary>
+        <p>At signup you get a one-time recovery code. It is the way back in if you forget your password, so save
+          it somewhere safe. You can generate a fresh one any time from settings while you are logged in. If you
+          lose both your password and your recovery code, your mail cannot be recovered. That is by design in
+          end-to-end mode: we do not hold anything that could unlock it for you.</p>
+      </details>
+      <details>
+        <summary>What are the encryption modes?</summary>
+        <p>Three, and you can switch any time from settings. <strong>End-to-end</strong> is the default: your key
+          is made in your browser and we cannot read your stored mail, but a recovery code can get you back in.
+          <strong>Keyfile</strong> is the strictest: you keep the only copy of your key and we store none of it,
+          so nothing is recoverable, on purpose. <strong>Server-managed</strong> is the convenient one: we hold
+          the key and can read your mail at rest, which keeps recovery simple.</p>
+      </details>
+      <details>
+        <summary>Can you read my mail?</summary>
+        <p>In end-to-end mode, which is the default, we cannot read your stored mail. One honest caveat: because
+          Elusive receives standard email, an incoming message exists in plaintext on our server for the instant
+          it takes to seal it to your key. Nothing is logged and it is never written to disk in that form. The
+          full picture is on the <a href="security">security page</a>.</p>
+      </details>
+      <details>
+        <summary>How do aliases and personas work?</summary>
+        <p>Alongside your main address you can make as many as you want. Some are permanent, some are disposable
+          and disappear after a set time or the moment they are opened. Group any of them under a persona like
+          "shopping" or "forums" to keep the parts of your life separate.</p>
+      </details>
+      <details>
+        <summary>Can I use my own domain?</summary>
+        <p>Not yet. Custom domains are on the roadmap and will be the natural home for any future paid plan.</p>
+      </details>
+      <details>
+        <summary>Are there attachments, mail import, and mobile apps?</summary>
+        <p>Attachments are live: you can send and receive files, and their names are encrypted at rest like
+          everything else. Importing your existing mail and signed desktop and mobile apps are still being built.
+          We would rather ship them properly than claim them early. When they land, this page changes.</p>
+      </details>
+      <details>
+        <summary>Is Elusive open source or audited?</summary>
+        <p>Open source, yes: the full source is public, so you can read exactly how Elusive works and hold us to
+          every claim on this page. Audited, not yet: there has been no independent third-party audit. So you can
+          verify the code yourself, but an outside review and a signed native client, which lets you check the
+          exact code you run, are the next things we want to earn that trust properly.</p>
+      </details>
+      <details>
+        <summary>Do you keep logs?</summary>
+        <p>We do not log requests or the contents of your mail. What we do handle is delivery metadata, who a
+          message is from and to at the moment it passes through, because routing email needs it. We never write
+          that to a log either, and since update one the stored copy of a message keeps its sender and recipient
+          sealed to your key.</p>
+      </details>
+      <details>
+        <summary>Where do you stand on message scanning laws?</summary>
+        <p>Against mandatory scanning of private messages, clearly. We wrote our position on the EU Chat Control
+          proposal on its own page: <a href="chat-control">On Chat Control</a>.</p>
+      </details>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+        <p>Private email that tells you the truth about itself. Free, no ads, nothing sold.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="/#identities">Aliases &amp; personas</a>
+        <a href="security">Security model</a>
+        <a href="help">Help</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about">About</a>
+        <a href="contact">Contact</a>
+        <a href="chat-control">On Chat Control</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="join">Create inbox</a>
+        <a href="login">Log in</a>
+        <a href="recover">Recover access</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="privacy">Privacy</a>
+        <a href="terms">Terms</a>
+        <a href="security">Security</a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>&copy; 2026 Elusive</span>
+      <span class="mono">no ads, nothing sold, no logs</span>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+  </div>
+</footer>
+
+<script src="scripts/shared/site.js"></script>
+</body>
+</html>

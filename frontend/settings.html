@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings · Elusive</title>
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/app.css">
+  <link rel="stylesheet" href="styles/settings.css">
+</head>
+<body class="settings-body">
+
+<header class="app-topbar">
+  <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+  <span class="topbar-spacer"></span>
+  <a class="btn btn--secondary btn--sm" href="dashboard">
+    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12h-15"/><path d="m11 5.5-6.5 6.5 6.5 6.5"/></svg>
+    Back to inbox
+  </a>
+</header>
+
+<div class="settings-wrap">
+  <div class="settings-title">
+    <h1>Settings</h1>
+    <p>Manage your identity, security, and how private your mail is.</p>
+  </div>
+
+  <nav class="settings-nav" id="settingsNav" aria-label="Settings sections">
+    <a href="#profile" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.9"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg>Profile</a>
+    <a href="#security"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s7.5-3.8 7.5-9.5V5.2L12 2.5 4.5 5.2V12c0 5.7 7.5 9.5 7.5 9.5Z"/></svg>Security</a>
+    <a href="#encryption"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.3"/><path d="m10.6 12.5 8.4-8.4"/><path d="m15.5 7 2.5 2.5"/><path d="m17.8 4.7 2.5 2.5"/></svg>Encryption</a>
+    <a href="#appearance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>Appearance</a>
+    <a href="#account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 21H5.5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 16.5 4.5-4.5L16 7.5"/><path d="M20.5 12H9.5"/></svg>Account</a>
+    <a href="#danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4.5"/><path d="M12 21.5s7.5-3.8 7.5-9.5V5.2L12 2.5 4.5 5.2V12c0 5.7 7.5 9.5 7.5 9.5Z"/><circle cx="12" cy="16.3" r="0.6" fill="currentColor" stroke="none"/></svg>Danger zone</a>
+  </nav>
+
+  <main class="settings-main">
+
+    <section class="set-section" id="profile">
+      <div class="set-card">
+        <div class="set-card__head"><h2>Profile</h2><p>How you show up inside Elusive. Only you see this.</p></div>
+        <div class="set-card__body">
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Avatar</div><div class="set-row__desc">Drawn from your display name.</div></div>
+            <div class="set-row__control"><span class="avatar avatar--lg" id="setAvatar">··</span></div>
+          </div>
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Display name</div><div class="set-row__desc">A nickname for yourself. Leave blank to use your username.</div></div>
+            <div class="set-row__control set-inline">
+              <div class="field"><input class="input" id="nickname" type="text" maxlength="40" placeholder="Your name"></div>
+              <button class="btn btn--secondary" id="saveNick">Save</button>
+            </div>
+          </div>
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Username</div><div class="set-row__desc">Permanent. This is your identity.</div></div>
+            <div class="set-row__control"><span class="set-row__value" id="setUsername"></span></div>
+          </div>
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Email address</div><div class="set-row__desc">Where your mail arrives.</div></div>
+            <div class="set-row__control">
+              <span class="set-row__value" id="setEmail"></span>
+              <button class="btn btn--icon btn--ghost" id="copyEmail" data-tooltip="Copy"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="set-section" id="security">
+      <div class="set-card">
+        <div class="set-card__head"><h2>Security</h2><p>Add a second lock to your account.</p></div>
+        <div class="set-card__body">
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Two-factor authentication</div><div class="set-row__desc" id="twofaDesc">A time-based code from your authenticator app, required at login.</div></div>
+            <div class="set-row__control" id="twofaControl"></div>
+          </div>
+          <div id="twofaEnroll"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="set-section" id="encryption">
+      <div class="set-card">
+        <div class="set-card__head"><h2>Encryption</h2><p>Choose who can read your mail. Switching re-encrypts your whole mailbox, which can take a moment.</p></div>
+        <div class="set-card__body">
+          <div id="encCurrent"></div>
+          <div class="enc-actions" id="encActions"></div>
+          <div class="enc-status" id="encStatus"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="set-section" id="appearance">
+      <div class="set-card">
+        <div class="set-card__head"><h2>Appearance</h2><p>Elusive follows your system by default.</p></div>
+        <div class="set-card__body">
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Theme</div><div class="set-row__desc">Light, dark, or match your device.</div></div>
+            <div class="set-row__control">
+              <div class="segment theme-seg" id="themeSeg">
+                <button data-theme-choice="system">System</button>
+                <button data-theme-choice="light">Light</button>
+                <button data-theme-choice="dark">Dark</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="set-section" id="account">
+      <div class="set-card">
+        <div class="set-card__head"><h2>Account</h2><p>Session and access.</p></div>
+        <div class="set-card__body">
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Log out</div><div class="set-row__desc">End this session on this device. In end-to-end mode your key is cleared from memory.</div></div>
+            <div class="set-row__control"><button class="btn btn--secondary" id="logoutBtn">Log out</button></div>
+          </div>
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Log out everywhere</div><div class="set-row__desc">Sign out every other device and browser. Use this if you lost a device or think someone else got in.</div></div>
+            <div class="set-row__control"><button class="btn btn--secondary" id="logoutAllBtn">Log out everywhere</button></div>
+          </div>
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Recovery code</div><div class="set-row__desc">Generate a fresh recovery code and retire the old one. For end-to-end accounts with the key stored here.</div></div>
+            <div class="set-row__control"><button class="btn btn--secondary" id="regenRecoveryBtn">Regenerate</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="set-section" id="danger">
+      <div class="set-card">
+        <div class="set-card__head"><h2>Danger zone</h2><p>Take your data with you, or leave for good.</p></div>
+        <div class="set-card__body">
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Export my data</div><div class="set-row__desc">Download everything stored about your account as a single JSON file.</div></div>
+            <div class="set-row__control"><button class="btn btn--secondary" id="exportDataBtn">Export</button></div>
+          </div>
+          <div class="set-row">
+            <div class="set-row__info"><div class="set-row__label">Delete account</div><div class="set-row__desc">This deletes your account, every address, and all stored mail. There is no undo.</div></div>
+            <div class="set-row__control"><button class="btn btn--danger" id="deleteAccountBtn">Delete account</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="scripts/vendor/openpgp.min.js"></script>
+<script src="scripts/shared/crypto-client.js"></script>
+<script type="module" src="scripts/pages/settings.js"></script>
+</body>
+</html>

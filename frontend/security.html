@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security · Elusive</title>
+  <meta name="description" content="How Elusive protects your mail, in technical detail: the ciphers, key management, metadata handling, and an honest threat model.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/marketing.css">
+  <link rel="stylesheet" href="styles/security.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav" id="siteNav">
+  <div class="site-nav__inner">
+    <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <nav class="site-nav__links" aria-label="Primary">
+      <div class="nav-desktop">
+        <a class="nav-link" href="/#identities">Aliases</a>
+        <a class="nav-link" href="security">Security</a>
+        <a class="nav-link" href="/#how">How it works</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+        <a class="nav-link" href="login">Log in</a>
+        <a class="btn btn--primary btn--sm" href="join">Create inbox</a>
+      </div>
+      <button class="btn btn--icon btn--ghost nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+        <svg class="icon nav-burger__open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+        <svg class="icon nav-burger__close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+    </nav>
+  </div>
+  <div class="site-nav__mobile" id="navMobile">
+    <a class="nav-link" href="/#identities">Aliases</a>
+    <a class="nav-link" href="security">Security</a>
+    <a class="nav-link" href="/#how">How it works</a>
+    <a class="nav-link" href="login">Log in</a>
+    <a class="btn btn--primary btn--block" href="join">Create inbox</a>
+  </div>
+  <div class="nav-scrim" id="navScrim"></div>
+</header>
+
+<main id="main" class="container">
+  <div class="secdoc">
+    <div class="secdoc__head">
+      <span class="eyebrow">Security</span>
+      <h1>How Elusive protects your mail.</h1>
+      <p class="lead">The full technical picture: the ciphers we use, how keys are generated and stored, what
+        metadata we minimize, and an honest account of what this design does not defend against.</p>
+      <div class="secdoc__meta">
+        <span class="secdoc__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg>Last reviewed 12 Jul 2026</span>
+        <span class="secdoc__chip">OpenPGP.js</span>
+        <span class="secdoc__chip">curve25519</span>
+        <span class="secdoc__chip">Argon2id</span>
+        <span class="secdoc__chip">no server logs</span>
+      </div>
+    </div>
+
+    <aside class="secdoc__nav" aria-label="Sections">
+      <span class="secdoc__nav-label">On this page</span>
+      <a href="#overview" class="active"><span class="num">01</span> Overview</a>
+      <a href="#modes"><span class="num">02</span> Encryption modes</a>
+      <a href="#primitives"><span class="num">03</span> Primitives</a>
+      <a href="#keys"><span class="num">04</span> Key management</a>
+      <a href="#metadata"><span class="num">05</span> Metadata</a>
+      <a href="#account"><span class="num">06</span> Account &amp; transport</a>
+      <a href="#disposable"><span class="num">07</span> Disposable mail</a>
+      <a href="#threat"><span class="num">08</span> Threat model</a>
+      <a href="#provenance"><span class="num">09</span> Verify what's running</a>
+      <a href="#disclosure"><span class="num">10</span> Disclosure</a>
+    </aside>
+
+    <div class="secdoc__body">
+      <section id="overview">
+        <h2><span class="num">01</span> Overview</h2>
+        <p>Every new account is end-to-end by default. An OpenPGP keypair is generated in your browser at
+          signup, and the private key never leaves it in a form we can use. We hold only your public key and
+          passphrase-locked copies of the private one, so we can encrypt incoming mail to you but cannot read
+          your stored mail. You can switch to server-managed later if you would rather we hold the key.</p>
+        <p>Nothing here is hand-rolled. Encryption uses <a class="link" href="https://openpgpjs.org" target="_blank" rel="noopener noreferrer">OpenPGP.js</a>,
+          an audited, standards-based library, running the same WebAssembly build we ship to your browser. We do
+          not invent primitives, and we try never to overstate what they buy you.</p>
+        <div class="sec-callout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.7h.01"/></svg>
+          <p><strong>The honest headline:</strong> in keyfile mode we store nothing that can decrypt your mail. If
+            you lose your key and passphrase, it is gone, and we cannot recover it. That is the design working as
+            intended, not a gap.</p>
+        </div>
+      </section>
+
+      <section id="modes">
+        <h2><span class="num">02</span> Encryption modes</h2>
+        <p>New accounts start end-to-end. You can switch modes any time from settings, and switching
+          re-encrypts your whole mailbox.</p>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Mode</th><th>Who holds the key</th><th>We can read your mail</th><th>Recovery</th></tr></thead>
+            <tbody>
+              <tr><td>End-to-end, stored <span class="mono">(default)</span></td><td>You; we keep a locked copy</td><td class="mono">No</td><td>Recovery code</td></tr>
+              <tr><td>End-to-end, keyfile</td><td>You, only you</td><td class="mono">No</td><td class="mono">None, by design</td></tr>
+              <tr><td>Server-managed</td><td>Elusive (<code>MASTER_KEY</code>)</td><td>Yes, at rest</td><td>Password reset</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Server-managed is appropriate when your threat model is disk theft or casual snooping, not the
+          operator. The two end-to-end modes differ only in custody: whether we store a passphrase-locked copy of
+          your key for convenience, or hold nothing at all.</p>
+      </section>
+
+      <section id="primitives">
+        <h2><span class="num">03</span> Cryptographic primitives</h2>
+        <p>The exact algorithms and parameters in use today.</p>
+        <div class="prim-grid">
+          <div class="prim"><div class="prim__k">Keypair</div><div class="prim__v">OpenPGP ECC, curve25519</div><div class="prim__note">AEAD-protected. Generated in-browser at key setup.</div></div>
+          <div class="prim"><div class="prim__k">Password to key (S2K)</div><div class="prim__v">Argon2id</div><div class="prim__note">Memory-hard. The upgrade over PBKDF2, since your password is the key.</div></div>
+          <div class="prim"><div class="prim__k">At rest (server-managed)</div><div class="prim__v">AES-256-GCM</div><div class="prim__note">Random 96-bit IV and 128-bit auth tag per message.</div></div>
+          <div class="prim"><div class="prim__k">Password hashing</div><div class="prim__v">bcrypt, cost 12</div><div class="prim__note">Constant-shape login to resist account enumeration.</div></div>
+          <div class="prim"><div class="prim__k">Recovery proof</div><div class="prim__v">SHA-256(code)</div><div class="prim__note">The plaintext recovery code never reaches the server.</div></div>
+          <div class="prim"><div class="prim__k">Recovery code entropy</div><div class="prim__v">~120 bits</div><div class="prim__note">25 Crockford base32 characters, generated in-browser.</div></div>
+        </div>
+      </section>
+
+      <section id="keys">
+        <h2><span class="num">04</span> Key management &amp; custody</h2>
+        <p>In end-to-end mode, your keypair is generated in your browser with OpenPGP.js. The private key is
+          immediately locked with your passphrase using Argon2id, and only leaves your device in that locked
+          form. Here is exactly what the server stores in each custody option.</p>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Item</th><th>Stored (end-to-end, stored)</th><th>Stored (keyfile)</th></tr></thead>
+            <tbody>
+              <tr><td>Public key</td><td class="mono">yes</td><td class="mono">yes</td></tr>
+              <tr><td>Private key, password-locked</td><td class="mono">yes</td><td class="mono">no</td></tr>
+              <tr><td>Private key, recovery-locked</td><td class="mono">yes</td><td class="mono">no</td></tr>
+              <tr><td>SHA-256 of recovery code</td><td class="mono">yes</td><td class="mono">no</td></tr>
+              <tr><td>Anything that decrypts your mail</td><td class="mono">no</td><td class="mono">no</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Fingerprint pinning (TOFU)</h3>
+        <p>On first sight, your browser pins your public-key fingerprint in local storage. If the server ever
+          serves a different fingerprint for your account, the app raises a full-width warning and asks you not
+          to trust the session until you verify the key out of band. This is a trust-on-first-use check against a
+          silent key swap.</p>
+        <h3>Recovery</h3>
+        <p>A high-entropy recovery code, shown once, unlocks a second recovery-locked copy of your private key.
+          A reset proves knowledge of the code with <code>SHA-256(code)</code>, so the server can verify you
+          without ever seeing the code and without being able to unlock the key itself. Keyfile mode has no
+          recovery path at all.</p>
+      </section>
+
+      <section id="metadata">
+        <h2><span class="num">05</span> Metadata minimization</h2>
+        <p>End-to-end mode encrypts subject lines as well as bodies. To stop ciphertext length from leaking
+          message size, plaintext is padded into fixed buckets before encryption. The wire format is a length
+          prefix followed by the text, padded up to the next bucket, and the browser strips it on decrypt.</p>
+        <div class="spec-code"><span class="c"># padded plaintext, before PGP encryption</span>
+<b>[ 8-digit length ][ utf-8 text ][ pad to next bucket ]</b>
+buckets = { 256, 1024, 8192, 65536 } bytes
+<span class="c"># a 40-byte note and a 900-byte note both encrypt to the 1024 bucket</span></div>
+        <p>Since update one, the envelope is sealed too: for end-to-end accounts, the stored sender and recipient
+          of every message are encrypted to your key, and persona names, folder names, nicknames and attachment
+          filenames are ciphertext at rest. Messages stored before the update keep their older server-key envelope
+          until the mailbox is re-encrypted by a mode switch.</p>
+        <p>What remains: we see who a message is from and to at the moment it passes through, because delivery
+          needs it, and we always see when mail arrives and which alias it went to. We do not pretend otherwise.
+          See the threat model below.</p>
+      </section>
+
+      <section id="account">
+        <h2><span class="num">06</span> Account &amp; transport controls</h2>
+        <p>These apply in every mode.</p>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Control</th><th>Mechanism</th></tr></thead>
+            <tbody>
+              <tr><td>Two-factor</td><td>TOTP, RFC 6238, verified server-side with a ±1 step skew</td></tr>
+              <tr><td>CSRF</td><td><code>SameSite=strict</code> cookies plus a per-session token on authenticated state-changing requests</td></tr>
+              <tr><td>Content Security Policy</td><td class="mono">script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; object-src 'none'</td></tr>
+              <tr><td>Session cookies</td><td><code>httpOnly</code>, <code>secure</code> in production, <code>SameSite=strict</code>, 12-hour lifetime</td></tr>
+              <tr><td>Auth rate limiting</td><td>10 attempts per 15 minutes per client</td></tr>
+              <tr><td>Logging</td><td>Requests, emails and message contents are never written to disk or console</td></tr>
+              <tr><td>Transport</td><td>HTTPS only; outbound mail uses STARTTLS where the receiving server supports it</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The <code>'wasm-unsafe-eval'</code> directive exists solely so the self-hosted OpenPGP.js bundle can
+          instantiate its Argon2 WebAssembly. It permits WASM compilation, not JavaScript <code>eval()</code>.</p>
+      </section>
+
+      <section id="disposable">
+        <h2><span class="num">07</span> Disposable mail</h2>
+        <p>Disposable aliases are built to leave no residue. Each carries either a timer or a burn-on-read flag.</p>
+        <ul>
+          <li><strong>Timed.</strong> The alias and all of its mail are deleted once the timer, from one minute up
+            to 24 hours, elapses. Expiry is enforced server-side on every mailbox read.</li>
+          <li><strong>Burn on read.</strong> The moment a message to the alias is opened, the alias and every
+            message it holds are deleted in the same request. A 24-hour safety expiry also applies, so an alias
+            that is never opened still cleans itself up.</li>
+        </ul>
+        <p>Deletion is a real row delete, not a hidden archive. In end-to-end mode the mail was unreadable to us
+          the whole time it existed.</p>
+      </section>
+
+      <section id="threat">
+        <h2><span class="num">08</span> Threat model</h2>
+        <p>Security is only meaningful against a stated adversary. Here is what this design defends against, and
+          what it does not.</p>
+        <div class="threat">
+          <div class="threat__col threat__col--protect">
+            <div class="threat__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s7.5-3.8 7.5-9.5V5.2L12 2.5 4.5 5.2V12c0 5.7 7.5 9.5 7.5 9.5Z"/><path d="m8.8 11.8 2.2 2.2 4-4.4"/></svg>Defends against</div>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>A stolen disk or database. Everything at rest is ciphertext.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>The operator reading your mail, in end-to-end mode. We hold no usable key.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>A silent key swap, caught by fingerprint pinning.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>Password guessing, slowed by Argon2id and bcrypt, and rate limiting.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>A later key compromise unlocking old mail. Each message is sealed to its own one-time key, deleted the moment you decrypt it.</li>
+            </ul>
+          </div>
+          <div class="threat__col">
+            <div class="threat__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.7h.01"/></svg>Does not defend against</div>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>A malicious or compromised server sending you bad browser code on a given page load. You can verify the server is running our signed, public backend image (see below), but that does not yet pin the exact JavaScript your browser fetched on this visit. A native app closes that gap; webmail alone cannot.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>Us reading a message the instant it arrives. We receive standard email as plaintext, then seal it to your key, so "we cannot read it" is true of your stored mail, not of a message in flight.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>Metadata at delivery time. We see who a message is from and to as it passes through, and always when it arrived and to which alias. The stored copy no longer reveals the sender and recipient, but a live observer of the server would.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></svg>The receiving side of mail sent to non-Elusive addresses.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sec-callout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.7h.01"/></svg>
+          <p><strong>No independent audit yet.</strong> Until someone outside Elusive has reviewed this, everything
+            here is our claim and not anyone else's verification. A published audit and signed apps that close the
+            webmail trust gap are the next items on the roadmap.</p>
+        </div>
+      </section>
+
+      <section id="provenance">
+        <h2><span class="num">09</span> Verify what's running</h2>
+        <p>The source is public, so you can read it. That still leaves the gap above: nothing stops a server from
+          quietly serving code that doesn't match what's on GitHub. Here's how we close that for the backend: every
+          image is built and signed by GitHub Actions itself, not by us by hand, using
+          <a class="link" href="https://docs.sigstore.dev/cosign/signing/overview/" target="_blank" rel="noopener noreferrer">Sigstore cosign</a>,
+          keyless, with no private key for anyone to leak or misuse. The signature is bound to the exact commit and
+          workflow run, and recorded in Sigstore's public, append-only transparency log. Anyone can check the image
+          this server is running right now was built from this repo, without taking our word for it.</p>
+        <div class="prim-grid" id="provenanceGrid" data-state="loading">
+          <div class="prim">
+            <div class="prim__k">Commit</div>
+            <div class="prim__v" id="provCommit">loading&hellip;</div>
+            <div class="prim__note" id="provCommitNote">&nbsp;</div>
+          </div>
+          <div class="prim">
+            <div class="prim__k">Image digest</div>
+            <div class="prim__v" id="provDigest">loading&hellip;</div>
+            <div class="prim__note">The exact, content-addressed build running right now.</div>
+          </div>
+        </div>
+        <div class="spec-code" id="provVerify"><span class="c"># fetching the live verify command&hellip;</span></div>
+        <p class="prov-hint">This runs entirely on your machine against the public Sigstore log, nothing here trusts us.
+          <button class="btn btn--secondary btn--sm" id="provCopy" type="button" hidden>Copy command</button></p>
+      </section>
+
+      <section id="disclosure">
+        <h2><span class="num">10</span> Responsible disclosure</h2>
+        <p>If you believe you have found a vulnerability, we want to hear about it before anyone else does. Report
+          it privately with enough detail to reproduce, and give us a reasonable window to fix it before any
+          public writeup. We will not pursue good-faith research that respects user privacy and avoids data
+          destruction. When a fix ships, this page and our disclosures change to match.</p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+        <p>Private email that tells you the truth about itself. Free, no ads, nothing sold.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="/#identities">Aliases &amp; personas</a>
+        <a href="security">Security</a>
+        <a href="/#how">How it works</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="join">Create inbox</a>
+        <a href="login">Log in</a>
+        <a href="recover">Recover access</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="privacy">Privacy</a>
+        <a href="terms">Terms</a>
+        <a href="security">Security</a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>&copy; 2026 Elusive</span>
+      <span class="mono">no ads, nothing sold, no logs</span>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+  </div>
+</footer>
+
+<script src="scripts/shared/site.js"></script>
+<script src="scripts/pages/security.js"></script>
+</body>
+</html>

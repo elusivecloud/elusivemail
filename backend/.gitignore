@@ -1,0 +1,29 @@
+# ---- Dependencies ----
+node_modules/
+
+# ---- Build artifacts ----
+target/
+native/
+../target/
+
+# ---- Databases (live + SQLite sidecar files) ----
+*.db
+*.db-shm
+*.db-wal
+data/
+backups/
+
+# ---- Secrets / credentials ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# ---- Logs & OS crumbs ----
+*.log
+.DS_Store
+Thumbs.db

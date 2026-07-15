@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About · Elusive</title>
+  <meta name="description" content="Why Elusive exists, how we think about privacy, and the things we will not do.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08090c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="scripts/shared/theme-init.js"></script>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/marketing.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav" id="siteNav">
+  <div class="site-nav__inner">
+    <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+    <nav class="site-nav__links" aria-label="Primary">
+      <div class="nav-desktop">
+        <a class="nav-link" href="/#identities">Aliases</a>
+        <a class="nav-link" href="security">Security</a>
+        <a class="nav-link" href="help">Help</a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+        <a class="nav-link" href="login">Log in</a>
+        <a class="btn btn--primary btn--sm" href="join">Create inbox</a>
+      </div>
+      <button class="btn btn--icon btn--ghost nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+        <svg class="icon nav-burger__open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+        <svg class="icon nav-burger__close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+    </nav>
+  </div>
+  <div class="site-nav__mobile" id="navMobile">
+    <a class="nav-link" href="/#identities">Aliases</a>
+    <a class="nav-link" href="security">Security</a>
+    <a class="nav-link" href="help">Help</a>
+    <a class="nav-link" href="login">Log in</a>
+    <a class="btn btn--primary btn--block" href="join">Create inbox</a>
+  </div>
+  <div class="nav-scrim" id="navScrim"></div>
+</header>
+
+<main id="main" class="container">
+  <article class="legal">
+    <div class="legal__head">
+      <span class="eyebrow">About</span>
+      <h1>Why Elusive exists.</h1>
+      <p class="legal__intro">Most email that calls itself secure oversells what it does. Elusive is an attempt at
+        the opposite: a private inbox that tells you the plain truth about itself, and states its limits as
+        clearly as its features.</p>
+    </div>
+
+    <section>
+      <h2>The idea</h2>
+      <p>Email is the last thing most people still run their whole life through, and it is also the least private.
+        We wanted an inbox where the strong claim, that only you can read your mail, is actually true and easy to
+        verify in plain language, and where the parts that are not private are said out loud instead of buried.</p>
+      <p>So the security model is written to be read, the defaults are the private ones, and the aliases and
+        personas that most people actually want are built in rather than sold as an add-on.</p>
+    </section>
+
+    <section>
+      <h2>How we think about it</h2>
+      <p><strong>Honesty is the product.</strong> If a claim on the site is not also true in the code, that is a
+        bug. We would rather lose someone with a limitation stated up front than keep them with a claim that does
+        not hold.</p>
+      <p><strong>Your mail is not a business.</strong> There are no ads and no data to sell, so the only honest
+        way to fund this is to charge for capacity, never for privacy, and only if we ever need to.</p>
+      <p><strong>We would rather not know you.</strong> No external email or phone number to sign up. The less we
+        hold about who you are, the less there is to leak, sell, or be compelled to hand over.</p>
+    </section>
+
+    <section>
+      <h2>What we will not do</h2>
+      <ul class="disclosure" data-reveal>
+        <li><span class="disclosure__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg></span><span><strong>No ads, no trackers, no profiling.</strong><span>Your mail is not a product.</span></span></li>
+        <li><span class="disclosure__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg></span><span><strong>No selling or sharing your data.</strong><span>Not to advertisers, not to anyone.</span></span></li>
+        <li><span class="disclosure__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg></span><span><strong>No backdoor in keyfile mode.</strong><span>If you hold the only key, we cannot read your mail for anyone who asks.</span></span></li>
+        <li><span class="disclosure__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg></span><span><strong>No logging of message contents.</strong><span>It is built in, not a setting you have to trust.</span></span></li>
+        <li><span class="disclosure__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg></span><span><strong>No claiming what we have not built.</strong><span>If it is not live, it is not sold as if it were.</span></span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Who is behind it</h2>
+      <p>A small, independent team, deliberately low-profile. We think a privacy product should be judged on what
+        it does and what an audit finds, not on names, so we keep the focus there for now. You can always reach a
+        human at <a class="link" href="contact">contact</a>.</p>
+    </section>
+
+    <section>
+      <h2>Where it is going</h2>
+      <p>Elusive is early, and honest about it. The near-term plan is a published independent audit, signed native
+        apps that let the code you run be checked, custom domains, and shrinking the metadata we hold over time.
+        The full and current picture lives on the <a class="link" href="security">security page</a>.</p>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a class="brand" href="/" aria-label="Elusive home"><span class="brand__word">elusive</span></a>
+        <p>Private email that tells you the truth about itself. Free, no ads, nothing sold.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="/#identities">Aliases &amp; personas</a>
+        <a href="security">Security model</a>
+        <a href="help">Help</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about">About</a>
+        <a href="contact">Contact</a>
+        <a href="chat-control">On Chat Control</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="join">Create inbox</a>
+        <a href="login">Log in</a>
+        <a href="recover">Recover access</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="privacy">Privacy</a>
+        <a href="terms">Terms</a>
+        <a href="security">Security</a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>&copy; 2026 Elusive</span>
+      <span class="mono">no ads, nothing sold, no logs</span>
+      <button class="btn btn--icon btn--ghost theme-toggle" data-theme-toggle type="button"></button>
+    </div>
+  </div>
+</footer>
+
+<script src="scripts/shared/site.js"></script>
+</body>
+</html>
